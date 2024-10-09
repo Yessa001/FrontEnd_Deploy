@@ -1,101 +1,148 @@
+"use client";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../lib/firebaseConfig";
+
+interface UserData {
+  name: string;
+  npm: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const data = querySnapshot.docs.map((doc) => doc.data() as UserData);
+
+        if (data.length > 0) {
+          setUserData(data[0]);
+        } else {
+          setError("No user data found");
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <>
+      <section className="identity">
+        <div className="card">
+        <Image src="/images/aku.jpeg" alt="photo" width={200} height={200} />
+          <div className="info">
+            {userData ? (
+              <>
+                <h2>
+                  {userData.name}
+                  <br />
+                  {userData.npm}
+                </h2>
+                <p>
+                  Saya adalah mahasiswa semester 5 di Universitas Teknologi
+                  Yogyakarta. Saat ini, saya sedang mendalami bidang studi
+                  Informatika dengan penuh semangat dan dedikasi. Selama masa
+                  studi, saya telah terlibat dalam berbagai proyek dan kegiatan
+                  yang memperkaya pengalaman akademis dan praktis saya. Saya
+                  selalu berusaha untuk mengembangkan keterampilan dan
+                  pengetahuan saya agar dapat berkontribusi secara positif di
+                  masa depan.
+                </p>
+              </>
+            ) : (
+              <p>No data available</p>
+            )}
+            <div className="icons">
+              <a href="#">
+              <Image src="/images/instagram.png" alt="photo" width={200} height={200} />
+              </a>
+              <a href="#">
+              <Image src="/images/linkedin.png" alt="photo" width={200} height={200} />
+              </a>
+              <a href="#">
+              <Image src="/images/tiktok.png" alt="photo" width={200} height={200} />
+              </a>
+              <a href="#">
+              <Image src="/images/youtube.png" alt="photo" width={200} height={200} />
+              </a>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* Bagian Scrollspy */}
+      <section className="description">
+        <div className="about-section row">
+          <div className="col-8">
+            <h2 style={{ fontSize: "20px", textDecorationLine: "underline", opacity: 0.8, color: "black" }}>
+              Tentang Website ini
+              <a href="#">
+              <Image src="/images/down-arrow.png" alt="photo" width={20} height={30} />
+              </a>
+            </h2>
+            <div
+              data-bs-spy="scroll"
+              data-bs-target="#list-example"
+              data-bs-smooth-scroll="true"
+              className="scrollspy-example"
+              tabIndex={0}
+            >
+              <h4 id="list-item-1">Teknologi yang digunakan?</h4>
+              <p style={{ textAlign: "justify" }}>
+                Website ini dibangun menggunakan perpaduan teknologi yang efektif, yaitu{" "}
+                <strong>Python</strong> dengan <strong>Flask</strong> untuk backend,{" "}
+                <strong>Bootstrap</strong> untuk frontend, dan <strong>MySQL</strong> sebagai
+                database. Masing-masing teknologi memiliki keunggulannya dalam mendukung performa
+                dan fungsionalitas aplikasi.
+              </p>
+              <h4 id="list-item-2">Apa itu Bootstrap?</h4>
+              <p style={{ textAlign: "justify" }}>
+                <strong>Bootstrap</strong> adalah sebuah framework front-end yang digunakan untuk
+                mempermudah dan mempercepat proses pengembangan antarmuka pengguna (UI) yang
+                responsif dan modern. Dikembangkan oleh tim di Twitter, Bootstrap menyediakan
+                berbagai komponen desain yang siap pakai.
+              </p>
+              <h4 id="list-item-3">Apa itu Flask?</h4>
+              <p style={{ textAlign: "justify" }}>
+                <strong>Flask</strong> adalah framework web minimalis yang ditulis dalam bahasa
+                pemrograman Python. Dikenal dengan kesederhanaannya, Flask dirancang untuk memudahkan
+                pengembang membangun aplikasi web dengan cepat tanpa memerlukan banyak komponen
+                tambahan.
+              </p>
+              <h4 id="list-item-4">Bagaimana cara membuat website ini?</h4>
+              <p style={{ textAlign: "justify" }}>
+                1. Install Python: Pastikan Python versi 3 terpasang.
+                <br />
+                2. Buat Virtual Environment: python -m venv venv
+                <br />
+                3. Install Flask: pip install Flask
+                <br />
+                4. Buat file app.py
+                <br />
+                5. Buat file index.html di folder templates.
+                <br />
+                6. Buat Database dan Tabel menggunakan Firebase.
+                <br />
+                7. Aktifkan virtual environment, lalu jalankan aplikasi: python app.py
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

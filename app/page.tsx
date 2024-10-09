@@ -106,7 +106,7 @@ export default function Home() {
               <p style={{ textAlign: "justify" }}>
                 <strong>Node.js</strong> adalah sebuah runtime JavaScript yang memungkinkan eksekusi kode JavaScript di sisi server, di luar lingkungan browser. Dikembangkan oleh Ryan Dahl dan dirilis pada tahun 2009, <strong>Node.js</strong> menggunakan mesin V8 yang dikembangkan oleh Google, yang memungkinkan eksekusi kode JavaScript secara cepat dan efisien. Dengan fitur asynchronous dan event-driven, <strong>Node.js</strong> dirancang untuk menangani banyak operasi secara bersamaan tanpa memblokir eksekusi, menggunakan model pemrograman berbasis event yang memanfaatkan fungsi callback untuk menangani hasil dari operasi asinkron. Selain itu, <strong>Node.js</strong> bersifat single-threaded, tetapi mampu mengelola banyak koneksi secara bersamaan, sehingga mengurangi overhead yang biasanya terkait dengan threading dan memungkinkan penanganan ribuan koneksi simultan dengan efisiensi tinggi.
               </p>
-              <h4 id="list-item-3">Apa itu Flask?</h4>
+              <h4 id="list-item-3">Apa itu Firebase?</h4>
               <p style={{ textAlign: "justify" }}>
                 <strong>Firebase</strong> Database adalah layanan basis data real-time yang disediakan oleh Google sebagai bagian dari platform Firebase, yang memungkinkan pengembang untuk menyimpan dan menyinkronkan data antara aplikasi dan pengguna secara real-time. Dengan <strong>Firebase</strong> Database, data disimpan dalam format JSON dan dapat diakses secara langsung dari klien, memungkinkan aplikasi untuk memperbarui dan menampilkan data tanpa perlu menyegarkan halaman.
               </p>

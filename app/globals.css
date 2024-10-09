@@ -18,6 +18,7 @@ body {
   color: var(--foreground);
   background-color: #f7f7f7;
   font-family: Arial, Helvetica, sans-serif;
+  padding: 50px;
 }
 
 p{
@@ -65,8 +66,16 @@ p{
   color: #007bff;
 }
 
+.icons {
+  display: flex;
+  justify-content: left; 
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .icons a {
   margin-right: 5px;
+  display: flex; 
 }
 
 .icons img {
